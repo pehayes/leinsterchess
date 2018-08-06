@@ -54,7 +54,9 @@ server <- function(input, output) {
         x %>% ggplot(.,aes(x = Score, fill = cut(Score, 100))) + 
           theme_economist() +
           geom_histogram(bins = 25, show.legend = FALSE) +
-          ggtitle("Histogram of Player Scores Across All Seasons")
+          ggtitle("Histogram of Player Scores Across All Seasons") +
+          xlab("Player Score (Per Season)") +
+          ylab("Frequency (count of player-seasons)")
    })
 }
 
