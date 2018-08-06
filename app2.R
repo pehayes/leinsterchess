@@ -15,9 +15,12 @@
 
 # Load required data file containing data at player level for the past 14 years of 
 # Leinster winter chess league data for all 7 divisions.
+
+# The data file must first be downloaded to your working directory from this github location:
+# https://github.com/pehayes/leinsterchess/blob/master/llout.Rda
   load(file = "llout.Rda")
     
-# Define UI for application that 
+# Define UI for application that generates a histogram of performance across the last 14 seasons
 ui <- fluidPage(
    
    # Application title
