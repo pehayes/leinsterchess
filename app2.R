@@ -7,27 +7,28 @@
 #    http://shiny.rstudio.com/
 #
 
-library(shiny)
-# test comment
+# Load required libraries
+  library(shiny)
+  library(dplyr)
+  library(ggplot2)
+  library(ggthemes)
 
-# Download required data file from github and load it
+# Load required data file containing data at player level for the past 14 years of 
+# Leinster winter chess league data for all 7 divisions.
   load(file = "llout.Rda")
     
-# Define UI for application that draws a histogram
+# Define UI for application that 
 ui <- fluidPage(
    
    # Application title
    titlePanel("Leinster Chess Leagues : 2003 - 2017 (All Leagues). Distribution of Score Per Player"),
    
-   # Sidebar with a slider input for number of bins 
+   # Sidebar with two dropdown lists to allow single selection of Year and Division 
    sidebarLayout(
       sidebarPanel(
         selectInput("year", "Select Year", 
                     choices = unique(as.character(llout$Year))
-                    )
-      ,
-      
-      
+                    ),
         selectInput("division", "Select Division", 
                     choices = unique(as.character(llout$Division))
                     )
@@ -41,17 +42,16 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-   
    output$distribution <- renderPlot({
-      # Filter Population input$Year from ui.R
-      x <- llout[llout$Year == input$year & llout$Division == input$division, 8]
-        # dplyr::filter(llout, as.character(llout$Year) == input$Year) %>% dplyr::select(.,8)
-        # dplyr::select(dplyr::filter(llout, as.character(llout$Year) == input$Year),Score) 
-        # 
-      bins <- seq(min(x$Score), max(x$Score), length.out = 20)
       
-      # draw the histogram with the specified number of bins
-      hist(x$Score, breaks = bins, col = 'darkgray', border = 'white')
+     # Filter the population using input$year and input$division from ui.R
+        x <- dplyr::filter(llout, as.character(llout$Year) == input$year & llout$Division == input$division) 
+     
+     # Generate a ggplot histogram of the output 
+        x %>% ggplot(.,aes(x = Score, fill = cut(Score, 100))) + 
+          theme_economist() +
+          geom_histogram(bins = 25, show.legend = FALSE) +
+          ggtitle("Histogram of Player Scores Across All Seasons")
    })
 }
 
