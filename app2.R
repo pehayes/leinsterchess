@@ -6,7 +6,6 @@
 #
 #    http://shiny.rstudio.com/
 #
-
 # Load required libraries
   library(shiny)
   library(dplyr)
